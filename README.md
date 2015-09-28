@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/kahu-collabs/batmap.png?label=ready&title=Ready)](https://waffle.io/kahu-collabs/batmap)
 # batmap
 
 
