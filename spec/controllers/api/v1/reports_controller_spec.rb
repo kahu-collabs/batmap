@@ -38,15 +38,22 @@ RSpec.describe Api::V1::ReportsController, type: :controller do
 	end
 
 	describe "CREATE a report" do
-		let(:mock_report){
+		let(:mock_saved_report){
 			double("Report", persisted?: true)
 		}
-		let!(:mock_create){
-			allow(Report).to receive(:create) {mock_report}
+		let(:mock_invalid_report){
+			double("Report", persisted?: false)
 		}
 		it "returns 200 with valid params" do
+			allow(Report).to receive(:create) {mock_saved_report}
 			post :create, report: {description: "Description"}
 			expect(response.status).to eq(200)
+		end
+
+		it "returns 400 with incorrect params" do
+			allow(Report).to receive(:create) {mock_invalid_report}
+			post :create, report: {description: "Description"}
+			expect(response.status).to eq(400)
 		end
 	end
 

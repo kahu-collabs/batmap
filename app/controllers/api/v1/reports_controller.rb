@@ -14,6 +14,8 @@ class Api::V1::ReportsController < ApplicationController
 		report = Report.create(report_params)
 		if report.persisted?
 			render json: report
+		else
+			head 400
 		end
 	end
 
