@@ -7,17 +7,24 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <nav>
-    <% if current_user %>
-      Signed in
-      <%= link_to 'Sign Out', '/sign_out', method: :delete %>
+home
+<!--   <nav>
+    # <% 
+    # if current_user %>
+      # Signed in
+      # <%= link_to 
+       # 'Sign Out', '/sign_out', method: :delete %>
 
-      <%= yield %>
+      # <%= 
+      # yield %>
 
-    <% else %>
-      <%= link_to 'Login', '/auth/facebook' %>
-    <% end %>
-  </nav>
+    # <% 
+    # # else %>
+    #   <%= link_to 
+      # 'Login', '/auth/facebook' %>
+    # <% end 
+    %>
+  </nav> -->
 
 </body>
 </html>

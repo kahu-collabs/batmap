@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
 
 
-  root 'home#index'
+  root 'jsmaps#main'
 
   get 'auth/:provider/callback', to: 'sessions#create'
 
