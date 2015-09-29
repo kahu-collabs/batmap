@@ -11,6 +11,28 @@ map.on('click', function(e) {
 	});
 
 
+$('#example').submit(function(event){
+	event.preventDefault();
+	console.log($('#dropDownId :selected').text())
+	console.log(event.target[1].value);
+	submitCrime(data);
+
+})
+
+// function submitCrime(input){
+// 	var data = input.
+// 	$post(
+// 		url: URL,
+// 		data: DATA,
+// 		success: DROPPIN I THINK,
+// 		dataType: DUNNO YET WTF
+// 		)
+// }
+
+
+// jQuery.post( url [, data ] [, success ] [, dataType ] )
+
+
 function dropPin(coord){
 	var y = L.mapbox.featureLayer({
 	    // this feature is in the GeoJSON format: see geojson.org

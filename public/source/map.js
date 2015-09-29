@@ -7,7 +7,7 @@ var map = L.mapbox.map(document.getElementById('map'), 'mapbox.streets')
 var click = document.getElementById('click')
 map.on('click', function(e) {
 	var latlng = [e.latlng.lng, e.latlng.lat]
-	$.featherlight($('#example'));
+	$.featherlight($('#reportform'));
 	});
 
 
