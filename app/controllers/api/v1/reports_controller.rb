@@ -19,6 +19,16 @@ class Api::V1::ReportsController < ApplicationController
 		end
 	end
 
+	def destroy
+		report = Report.find_by(id: params[:id])
+		if report
+			report.destroy
+			head 200
+		else
+			head 400
+		end
+	end
+
 	private
 
 	def report_params

@@ -57,6 +57,29 @@ RSpec.describe Api::V1::ReportsController, type: :controller do
 		end
 	end
 
+	describe "DELETE a report" do
+		let(:mock_report){
+			double("Report", destroy: nil)
+		}
+		it "returns 200 with valid params" do
+			allow(Report).to receive(:find_by) {mock_report}
+			delete :destroy, id: 1
+			expect(response.status).to eq(200)
+		end
+
+		it "calls destroy with valid params" do
+			allow(Report).to receive(:find_by) {mock_report}
+			expect(mock_report).to receive(:destroy)
+			delete :destroy, id: 1
+		end
+
+		it "returns 400 with incorrect params" do
+			allow(Report).to receive(:find_by) {nil}
+			delete :destroy, id: -1
+			expect(response.status).to eq(400)
+		end
+	end
+
 
 
 end
