@@ -11,11 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 20150929032521) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+<<<<<<< HEAD
   create_table "users", force: :cascade do |t|
     t.string   "provider"
     t.string   "uid"
@@ -24,5 +27,26 @@ ActiveRecord::Schema.define(version: 20150929032521) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "category_types", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reports", force: :cascade do |t|
+    t.integer  "category_types_id"
+    t.string   "description"
+    t.boolean  "happened_before",   default: false
+    t.text     "additional_info"
+    t.integer  "user_id_id"
+    t.string   "location"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+  end
+
+  add_index "reports", ["category_types_id"], name: "index_reports_on_category_types_id", using: :btree
+
+
 
 end

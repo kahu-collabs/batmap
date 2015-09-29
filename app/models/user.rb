@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+
   def self.find_or_create_from_omniauth(auth)
     user = User.where({:uid => auth[:uid], :provider => auth[:provider]}).first_or_create
 
@@ -10,4 +11,5 @@ class User < ActiveRecord::Base
     user.save if user.changed?
     user
   end
+
 end
