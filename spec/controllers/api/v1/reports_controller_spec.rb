@@ -17,14 +17,14 @@ RSpec.describe Api::V1::ReportsController, type: :controller do
 			results = JSON.parse(response.body)
 			expect(results.first["text"]).to eq("meow")
 		end
-	end	
+	end
 
 	describe "GET individual report" do
 
 		let!(:mock_find){
 			allow(Report).to receive(:find) {{text:"meow"}}
 		}
-		
+
 		it "returns 200" do
 			get :show, :id => 1
 			expect(response.status).to eq(200)
@@ -38,11 +38,15 @@ RSpec.describe Api::V1::ReportsController, type: :controller do
 	end
 
 	describe "CREATE a report" do
-		let!(:mock_create){
-			allow(Report).to
+		let(:mock_report){
+			double("Report", persisted?: true)
 		}
-		it "" do
-
+		let!(:mock_create){
+			allow(Report).to receive(:create) {mock_report}
+		}
+		it "returns 200 with valid params" do
+			post :create, report: {description: "Description"}
+			expect(response.status).to eq(200)
 		end
 	end
 
