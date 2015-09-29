@@ -23,17 +23,17 @@ ActiveRecord::Schema.define(version: 20150928214819) do
   end
 
   create_table "reports", force: :cascade do |t|
-    t.integer  "category_type_id"
+    t.integer  "category_types_id"
     t.string   "description"
-    t.boolean  "happened_before",  default: false
+    t.boolean  "happened_before",   default: false
     t.text     "additional_info"
     t.integer  "user_id_id"
     t.string   "location"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
-  add_index "reports", ["category_type_id"], name: "index_reports_on_category_type_id", using: :btree
+  add_index "reports", ["category_types_id"], name: "index_reports_on_category_types_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false

@@ -1,7 +1,15 @@
 class Api::V1::ReportsController < ApplicationController
 	
 	def index
-		head 200
+		@reports = Report.all
+		render json: @reports
 	end
+
+	def show
+		@report = Report.find
+		render json: @report
+	end
+
+	
 
 end

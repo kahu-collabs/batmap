@@ -1,7 +1,7 @@
 class CreateReports < ActiveRecord::Migration
   def change
     create_table :reports do |t|
-      t.belongs_to :category_type, index: true
+      t.belongs_to :category_types, index: true
       t.string :description
       t.boolean :happened_before, default: false
       t.text :additional_info
