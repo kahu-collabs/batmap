@@ -11,11 +11,15 @@ class Api::V1::ReportsController < ApplicationController
 	end
 
 	def create
-		report = Report.create(report_params)
-		if report.persisted?
-			render json: report
+		if !current_user
+			head 403
 		else
-			head 400
+			report = Report.create(report_params)
+			if report.persisted?
+				render json: report
+			else
+				head 400
+			end
 		end
 	end
 
