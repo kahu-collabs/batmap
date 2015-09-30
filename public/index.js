@@ -17,17 +17,13 @@ map.on('click', function(e) {
 
 $('#example').submit(function(event){
 	event.preventDefault();
-	console.log(event.target);
-	type = testtype(event.target[0].value);
-	console.log(event.target[1].checked); // note this is not working!!! False everytime
-	console.log(event.target[2].value);
-	console.log(latlng)
-	submitCrime(data);
-	var to_db = {description: event.target[1].value, happened_before: event.target[1].checked, location: latlng}
+	var type = testType(event.target[0].value);
 
 
-	// (:description, :happened_before,
-	// 		:additional_info, :location)
+	var to_db = {category_type: type, description: event.target[1].value, happened_before: event.target[2].checked, location: latlng.join() };
+
+	submitCrime(to_db);
+
 
 })
 
@@ -45,18 +41,24 @@ function testType(type){
 	else {return 4}
 }
 
-// function submitCrime(input){
-// 	var data = input.
-// 	$post(
-// 		url: URL,
-// 		data: DATA,
-// 		success: DROPPIN I THINK,
-// 		dataType: DUNNO YET WTF
-// 		)
-// }
+function submitCrime(input){
+	var data = input.location
 
+	$.ajax({
+	  type: "POST",
+	  url: "api/v1/reports",
+	  data: input,
+	  success: dropPin(data),
+	  dataType: "json"
+	});
 
-// jQuery.post( url [, data ] [, success ] [, dataType ] )
+	// $post(
+	// 	url: "./api/v1/reports",
+	// 	data: input,
+	// 	success: dropPin(data),
+	// 	)
+}
+
 
 
 function dropPin(coord){
@@ -69,11 +71,11 @@ function dropPin(coord){
 	        type: 'Point',
 	        // coordinates here are in longitude, latitude order because
 	        // x, y is the standard for GeoJSON and many formats
-	        coordinates: coord
+	        coordinates: latlng
 	    },
 	    properties: {
-	        title: '',
-	        description: '',
+	        title: 'asdf',
+	        description: 'asdf',
 	        'marker-size': 'large',
 	        'marker-color': '#BE9A6B',
 	        'marker-symbol': 'cafe'
