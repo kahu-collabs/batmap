@@ -3,19 +3,25 @@ L.mapbox.accessToken = 'pk.eyJ1IjoicGV0dHljcmltZSIsImEiOiJjaWY0cTBoZDgwbXl0c2RtN
 var map = L.mapbox.map(document.getElementById('map'), 'mapbox.streets')
     .setView([-41.29, 174.78], 13);
 
+var latlng = []
+
 
 
 var click = document.getElementById('click')
 map.on('click', function(e) {
-	var latlng = [e.latlng.lng, e.latlng.lat]
+	latlng = [e.latlng.lng, e.latlng.lat]
+	console.log(latlng)
 	$.featherlight($('#example'));
 	});
 
 
 $('#example').submit(function(event){
 	event.preventDefault();
-	console.log($('#dropDownId :selected').text())
+	console.log(event);
+	console.log(event.target[0].value);
 	console.log(event.target[1].value);
+	console.log(event.target[2].value);
+	console.log(latlng)
 	submitCrime(data);
 
 })
