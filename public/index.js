@@ -18,18 +18,32 @@ map.on('click', function(e) {
 $('#example').submit(function(event){
 	event.preventDefault();
 	console.log(event.target);
-	console.log(event.target[0].value);
-	console.log(event.target[1].checked);
+	type = testtype(event.target[0].value);
+	console.log(event.target[1].checked); // note this is not working!!! False everytime
 	console.log(event.target[2].value);
 	console.log(latlng)
 	submitCrime(data);
-	// var to_db = {description: event.target[1].value, happened_before:  }
+	var to_db = {description: event.target[1].value, happened_before: event.target[1].checked, location: latlng}
 
 
 	// (:description, :happened_before,
 	// 		:additional_info, :location)
 
 })
+
+
+function testType(type){
+	if (type == "Joker Gassing"){
+		return 1
+	}
+	else if (type == "Mugging"){
+		return 2
+	}
+	else if (type == "Home Invasion"){
+		return 3
+	}
+	else {return 4}
+}
 
 // function submitCrime(input){
 // 	var data = input.
