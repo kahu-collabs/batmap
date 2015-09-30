@@ -17,12 +17,17 @@ map.on('click', function(e) {
 
 $('#example').submit(function(event){
 	event.preventDefault();
-	console.log(event);
+	console.log(event.target);
 	console.log(event.target[0].value);
-	console.log(event.target[1].value);
+	console.log(event.target[1].checked);
 	console.log(event.target[2].value);
 	console.log(latlng)
 	submitCrime(data);
+	// var to_db = {description: event.target[1].value, happened_before:  }
+
+
+	// (:description, :happened_before,
+	// 		:additional_info, :location)
 
 })
 
