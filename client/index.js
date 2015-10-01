@@ -1,8 +1,10 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoicGV0dHljcmltZSIsImEiOiJjaWY0cTBoZDgwbXl0c2RtN2ZjYzhicjZoIn0.FDjxXktw-rA-U-qobjyNxQ';
-var map = L.mapbox.map(document.getElementById('map'), 'mapbox.streets')
+var map = L.mapbox.map(document.getElementById('map'), 'pettycrime.nj17g72j')
     .setView([-41.29, 174.78], 13);
 
 var latlng = []
+
+
 
 
 
@@ -61,6 +63,16 @@ function submitCrime(input){
 
 
 
+"properties": {
+           "title": "mugging",
+           "icon": {
+               "iconUrl": "batpin.png",
+               "iconSize": [50, 50], // size of the icon
+               "iconAnchor": [25, 25], // point of the icon which will correspond to marker's location
+               "popupAnchor": [0, -25], // point from which the popup should open relative to the iconAnchor
+               "className": "dot"
+           }
+
 function dropPin(coord){
 	var y = L.mapbox.featureLayer({
 	    // this feature is in the GeoJSON format: see geojson.org
@@ -74,8 +86,15 @@ function dropPin(coord){
 	        coordinates: latlng
 	    },
 	    properties: {
-	        title: 'asdf',
+	        title: 'Mugging',
 	        description: 'asdf',
+	        "icon": {
+               "iconUrl": "batpin.png",
+               "iconSize": [50, 50], // size of the icon
+               "iconAnchor": [25, 25], // point of the icon which will correspond to marker's location
+               "popupAnchor": [0, -25], // point from which the popup should open relative to the iconAnchor
+               "className": "dot"
+           }
 	        'marker-size': 'large',
 	        'marker-color': '#BE9A6B',
 	        'marker-symbol': 'cafe'
