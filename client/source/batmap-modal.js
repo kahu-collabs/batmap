@@ -3,7 +3,7 @@ var Modal = require('react-modal');
 var ModalForm = require('./form')
 var PoliceNumber = require('./police')
 
-var BatmapModal = React.createClass({
+module.exports = React.createClass({
 
   getInitialState: function() {
     return {
@@ -11,7 +11,6 @@ var BatmapModal = React.createClass({
       lifeThreatening: false
     };
   },
-
 
   openModal: function() {
     this.setState({modalIsOpen: true});
@@ -33,7 +32,7 @@ var BatmapModal = React.createClass({
     console.log('Modal: props, state', this.props, this.state)
     return (
       <div className="buttonform">
-        <img src={'/assets/batman-button.png'} alt="batman" className="img-responsive" onClick={this.openModal} />
+        <button onClick={this.openModal}>button</button>
         <Modal
           closeTimeoutMS={100}
           isOpen={this.state.modalIsOpen}
@@ -51,5 +50,6 @@ var BatmapModal = React.createClass({
     );
   }
 });
+
 
 

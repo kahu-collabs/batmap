@@ -1,10 +1,9 @@
-var React = require('react')//main
-
-
-
-
-
-
+console.log('test')
+var React = require('react')  //main
+console.log('test')
+var BatmapModal = require('./source/batmap-modal')
+console.log('test')
+React.render(<BatmapModal />, document.querySelector('#batmap-modal'))
 
 
 L.mapbox.accessToken = 'pk.eyJ1IjoicGV0dHljcmltZSIsImEiOiJjaWY0cTBoZDgwbXl0c2RtN2ZjYzhicjZoIn0.FDjxXktw-rA-U-qobjyNxQ';
