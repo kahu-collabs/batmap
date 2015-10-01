@@ -8,6 +8,11 @@ var myLayer = L.mapbox.featureLayer().addTo(map);
 var latlng = []
 
 
+$.get( "api/v1/reports", function( data ) {
+  $( ".result" ).html( data );
+});
+
+
 
 render();
 
