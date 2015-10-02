@@ -1,4 +1,11 @@
+
 var getCrime = require('./source/getCrimeObject')
+
+var React = require('react')  //main
+var BatmapModal = require('./source/batmap-modal')
+React.render(<BatmapModal />, document.querySelector('#batmap-modal'))
+
+
 
 L.mapbox.accessToken = 'pk.eyJ1IjoicGV0dHljcmltZSIsImEiOiJjaWY0cTBoZDgwbXl0c2RtN2ZjYzhicjZoIn0.FDjxXktw-rA-U-qobjyNxQ';
 
@@ -8,6 +15,7 @@ var map = L.mapbox.map(document.getElementById('map'), 'pettycrime.nj17g72j')
 
 var myLayer = L.mapbox.featureLayer().addTo(map);
 var latlng = []
+
 
 $(document).ready(function(){
 		dat_get()
@@ -55,6 +63,7 @@ function makeObjects(rawData){
   }
   return geoJson
 }
+
 
 
 
