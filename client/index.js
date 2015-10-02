@@ -1,10 +1,16 @@
+console.log('test')
+var React = require('react')  //main
+console.log('test')
+var BatmapModal = require('./source/batmap-modal')
+console.log('test')
+React.render(<BatmapModal />, document.querySelector('#batmap-modal'))
+
+
 L.mapbox.accessToken = 'pk.eyJ1IjoicGV0dHljcmltZSIsImEiOiJjaWY0cTBoZDgwbXl0c2RtN2ZjYzhicjZoIn0.FDjxXktw-rA-U-qobjyNxQ';
 var map = L.mapbox.map(document.getElementById('map'), 'mapbox.streets')
     .setView([-41.29, 174.78], 13);
 
 var latlng = []
-
-
 
 var click = document.getElementById('click')
 map.on('click', function(e) {
