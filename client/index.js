@@ -1,3 +1,5 @@
+var getCrime = require('./source/getCrimeObject')
+
 L.mapbox.accessToken = 'pk.eyJ1IjoicGV0dHljcmltZSIsImEiOiJjaWY0cTBoZDgwbXl0c2RtN2ZjYzhicjZoIn0.FDjxXktw-rA-U-qobjyNxQ';
 
 var geoJson = []
@@ -7,14 +9,53 @@ var map = L.mapbox.map(document.getElementById('map'), 'pettycrime.nj17g72j')
 var myLayer = L.mapbox.featureLayer().addTo(map);
 var latlng = []
 
-
-$.get( "api/v1/reports", function( data ) {
-  $( ".result" ).html( data );
-});
-
+$(document).ready(function(){
+		dat_get()
+})
 
 
-render();
+function dat_get(){
+	$.get( "api/v1/reports", function( data ) {
+		  $( ".result" ).html( data );
+		  // console.log("call back data", data)
+		  var renderObjects = makeObjects(data)
+		  // console.log('render objects ', renderObjects)
+		  render(renderObjects);
+	});
+}
+
+// use the type ID to find the actual ID of the object
+
+function makeObjects(rawData){
+  for(i = 0; i < rawData.length; i++){
+    var item = rawData[i]
+    var id = item.id
+    var type = item.category_types_id
+    if(type == 1){
+    	var title = "Joker Gassing",
+    		img = "assets/joker_pin.png"
+    	} else if(type == 2){
+    		var title = "Mugging",
+    			img = "assets/batpin.png"
+    	} else if(type == 3){
+    		var title = "Home invasion",
+    			img = "assets/home_invasion.png"
+    	} else {
+    		var title = "Car Theft",
+    			img = "assets/car_thieft.png"
+    	}
+
+    console.log(item.location)
+    x = (item.category_types_id) - 1
+
+    var crime = getCrime(item.id, title, img, item.location, item.description)
+    console.log("crime ", crime)
+    geoJson.push(crime)
+    // pull the appropriate object out of the crime objects array, populate the relevant fields and push into geoJson array
+  }
+  return geoJson
+}
+
 
 
 
@@ -34,11 +75,11 @@ map.on('click', function(e) {
 $('#example').submit(function(event){
 	event.preventDefault();
 	var type = testType(event.target[0].value);
-
-
-	var to_db = {category_type: type, description: event.target[1].value, happened_before: event.target[2].checked, location: latlng.join() };
-	console.log("onclick " + to_db["category_type"])
+	console.log(type)
+	var to_db = {category_types_id: type, description: event.target[1].value, happened_before: event.target[2].checked, location: latlng.join() };
+	console.log("onclick ", to_db)
 	submitCrime(to_db);
+	dat_get();
 
 
 })
@@ -63,111 +104,23 @@ function submitCrime(input){
 	  type: "POST",
 	  url: "api/v1/reports",
 	  data: input,
-	  success: dropPin(input),
+	  success: dat_get(),
 	  dataType: "json"
 	});
-
-	// $post(
-	// 	url: "./api/v1/reports",
-	// 	data: input,
-	// 	success: dropPin(data),
-	// 	)
 }
 
 
-
-
-function dropPin(object_with_data){
-
-		var crimeObjects = [{
-		       "type": "Feature",
-		       "geometry": {
-		           "type": "Point",
-		           "coordinates": latlng
-		       },
-		       "properties": {
-		           "title": "Joker Gassing",
-		           "icon": {
-		               "iconUrl": "assets/joker_pin.png",
-		               "iconSize": [50, 50], // size of the icon
-		               "iconAnchor": [25, 25], // point of the icon which will correspond to marker's location
-		               "popupAnchor": [0, -25], // point from which the popup should open relative to the iconAnchor
-		               "className": "dot"
-		           }
-		       }
-		   }, {
-		       "type": "Feature",
-		       "geometry": {
-		           "type": "Point",
-		           "coordinates": latlng
-		       },
-		       "properties": {
-		           "title": "Mugging",
-		           "icon": {
-		               "iconUrl": "assets/batpin.png",
-		               "iconSize": [50, 50],
-		               "iconAnchor": [25, 25],
-		               "popupAnchor": [0, -25],
-		               "className": "dot"
-		           }
-		       }
-		   }, {
-		       "type": "Feature",
-		       "geometry": {
-		           "type": "Point",
-		           "coordinates": latlng
-		       },
-		       "properties": {
-		           "title": "Home Invasion",
-		           "icon": {
-		               "iconUrl": "assets/home_invasion.png",
-		               "iconSize": [50, 50],
-		               "iconAnchor": [25, 25],
-		               "popupAnchor": [0, -25],
-		               "className": "dot"
-		           }
-		       }
-		   }, {
-		       "type": "Feature",
-		       "geometry": {
-		           "type": "Point",
-		           "coordinates": latlng
-		       },
-		       "properties": {
-		           "title": "Car Theft",
-		           "icon": {
-		               "iconUrl": "assets/car_thieft.png",
-		               "iconSize": [50, 50],
-		               "iconAnchor": [25, 25],
-		               "popupAnchor": [0, -25],
-		               "className": "dot"
-		           }
-		       }
-		   }];
-
-
-
-
-	x = (object_with_data["category_type"]) - 1;
-
-	geoJson.push(crimeObjects[x])
-	console.log(geoJson);
-	render()
-
-
-}
-
-
-function render(){
+function render(data){
+	console.log("rendering", data)
 	myLayer.on('layeradd', function(e) {
     var marker = e.layer,
         feature = marker.feature;
+        console.log("on layer add", feature.properties.icon)
 
    marker.setIcon(L.icon(feature.properties.icon));
 
+   console.log("str ", marker)
+
 	});
-
-
-
-	myLayer.setGeoJSON(geoJson);
+	myLayer.setGeoJSON(data);
 }
