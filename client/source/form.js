@@ -7,7 +7,7 @@ module.exports = React.createClass({
 
   // 	var self = this
 
- 
+
   // 	$.ajax({
   // 		method: 'POST',
   // 		url: '/api/v1/users',
@@ -23,7 +23,7 @@ module.exports = React.createClass({
   render: function(){
   	return (
   		<div className="form-modal">
-        <a href="/auth/facebook">Login</a>
+        <a href="/auth/facebook">Login with FaceBook</a>
 			</div>
   	)
   }

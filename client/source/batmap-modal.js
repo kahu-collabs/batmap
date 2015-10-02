@@ -3,6 +3,16 @@ var Modal = require('react-modal');
 var ModalForm = require('./form')
 var PoliceNumber = require('./police')
 
+var customStyles = {
+  content: {
+    boardColor: 'black',
+    backgroundColor: 'grey',
+    width: '225px',
+    height: '500px'
+  }
+}
+
+
 module.exports = React.createClass({
 
   getInitialState: function() {
@@ -29,11 +39,11 @@ module.exports = React.createClass({
   },
 
   render: function() {
-    console.log('Modal: props, state', this.props, this.state)
     return (
       <div className="buttonform">
-        <button onClick={this.openModal}>button</button>
+        <img src={'/assets/BatMapButton.png'} alt="batman" className="img-responsive" onClick={this.openModal} />
         <Modal
+          style={customStyles}
           closeTimeoutMS={100}
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.handleModalCloseRequest}>
@@ -43,8 +53,8 @@ module.exports = React.createClass({
             <input type="radio" name="crime" value="no" onChange={this.handleInputChange} checked={!this.state.lifeThreatening}>No</input>
             <br/>
           </form>
-          <button className='button-close' onClick={this.closeModal}>close</button>
-          {this.state.lifeThreatening ? <PoliceNumber /> : <ModalForm closeModal={this.closeModal} />}
+          {this.state.lifeThreatening ? <PoliceNumber  /> : <ModalForm closeModal={this.closeModal} />}
+           <img src={'/assets/batclose.png'} alt="batman" className="img-close" onClick={this.closeModal} />
         </Modal>
       </div>
     );

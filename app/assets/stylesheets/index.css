@@ -6,6 +6,7 @@
 
 .ReactModal__Overlay--after-open {
   opacity: 1;
+
   transition: opacity 150ms ease-out;
 }
 
