@@ -1,15 +1,14 @@
-
-var getCrime = require('./source/getCrimeObject')
+var makeObjects = require('./source/map/make_objects')
+var getCrime = require('./source/map/getCrimeObject')
 
 var React = require('react')  //main
 var BatmapModal = require('./source/batmap-modal')
 React.render(<BatmapModal />, document.querySelector('#batmap-modal'))
 
 
-
+var geoJson = []
 L.mapbox.accessToken = 'pk.eyJ1IjoicGV0dHljcmltZSIsImEiOiJjaWY0cTBoZDgwbXl0c2RtN2ZjYzhicjZoIn0.FDjxXktw-rA-U-qobjyNxQ';
 
-var geoJson = []
 var map = L.mapbox.map(document.getElementById('map'), 'pettycrime.nj17g72j')
     .setView([-41.29, 174.78], 13);
 
@@ -34,35 +33,35 @@ function dat_get(){
 
 // use the type ID to find the actual ID of the object
 
-function makeObjects(rawData){
-  for(i = 0; i < rawData.length; i++){
-    var item = rawData[i]
-    var id = item.id
-    var type = item.category_types_id
-    if(type == 1){
-    	var title = "Joker Gassing",
-    		img = "assets/joker_pin.png"
-    	} else if(type == 2){
-    		var title = "Mugging",
-    			img = "assets/batpin.png"
-    	} else if(type == 3){
-    		var title = "Home invasion",
-    			img = "assets/home_invasion.png"
-    	} else {
-    		var title = "Car Theft",
-    			img = "assets/car_thieft.png"
-    	}
+// function makeObjects(rawData){
+//   for(i = 0; i < rawData.length; i++){
+//     var item = rawData[i]
+//     var id = item.id
+//     var type = item.category_types_id
+//     if(type == 1){
+//     	var title = "Joker Gassing",
+//     		img = "assets/joker_pin.png"
+//     	} else if(type == 2){
+//     		var title = "Mugging",
+//     			img = "assets/batpin.png"
+//     	} else if(type == 3){
+//     		var title = "Home invasion",
+//     			img = "assets/home_invasion.png"
+//     	} else {
+//     		var title = "Car Theft",
+//     			img = "assets/car_thieft.png"
+//     	}
 
-    console.log(item.location)
-    x = (item.category_types_id) - 1
+//     console.log(item.location)
+//     x = (item.category_types_id) - 1
 
-    var crime = getCrime(item.id, title, img, item.location, item.description)
-    console.log("crime ", crime)
-    geoJson.push(crime)
-    // pull the appropriate object out of the crime objects array, populate the relevant fields and push into geoJson array
-  }
-  return geoJson
-}
+//     var crime = getCrime(item.id, title, img, item.location, item.description)
+//     console.log("crime ", crime)
+//     geoJson.push(crime)
+//     // pull the appropriate object out of the crime objects array, populate the relevant fields and push into geoJson array
+//   }
+//   return geoJson
+// }
 
 
 
@@ -72,10 +71,7 @@ function makeObjects(rawData){
 var click = document.getElementById('click')
 
 map.on('click', function(e) {
-	console.log(e.latlng.lng)
-	console.log(e.latlng.lat)
 	latlng = [e.latlng.lng, e.latlng.lat]
-	console.log(latlng)
 	$.featherlight($('#example'));
 	});
 
@@ -84,9 +80,7 @@ map.on('click', function(e) {
 $('#example').submit(function(event){
 	event.preventDefault();
 	var type = testType(event.target[0].value);
-	console.log(type)
 	var to_db = {category_types_id: type, description: event.target[1].value, happened_before: event.target[2].checked, location: latlng.join() };
-	console.log("onclick ", to_db)
 	submitCrime(to_db);
 	dat_get();
 
@@ -120,16 +114,10 @@ function submitCrime(input){
 
 
 function render(data){
-	console.log("rendering", data)
 	myLayer.on('layeradd', function(e) {
     var marker = e.layer,
         feature = marker.feature;
-        console.log("on layer add", feature.properties.icon)
-
    marker.setIcon(L.icon(feature.properties.icon));
-
-   console.log("str ", marker)
-
 	});
 	myLayer.setGeoJSON(data);
 }
