@@ -1,6 +1,5 @@
 var getCrime = require('./getCrimeObject')
 
-
 module.exports = function(rawData) {
   var geoJson = []
   for(i = 0; i < rawData.length; i++){
