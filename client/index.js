@@ -3,6 +3,7 @@ var React = require('react')  //main
 var makeObjects = require('./source/map/make_objects')
 var getCrime = require('./source/map/getCrimeObject')
 var BatmapModal = require('./source/batmap-modal')
+var testType = require('./source/map/testType')
 
 
 L.mapbox.accessToken = 'pk.eyJ1IjoicGV0dHljcmltZSIsImEiOiJjaWY0cTBoZDgwbXl0c2RtN2ZjYzhicjZoIn0.FDjxXktw-rA-U-qobjyNxQ';
@@ -43,20 +44,6 @@ $('#example').submit(function(event){
 
 
 })
-
-
-function testType(type){
-	if (type == "Joker Gassing"){
-		return 1
-	}
-	else if (type == "Mugging"){
-		return 2
-	}
-	else if (type == "Home Invasion"){
-		return 3
-	}
-	else {return 4}
-}
 
 function submitCrime(input){
 

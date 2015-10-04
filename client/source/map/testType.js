@@ -1,4 +1,4 @@
-exports.testType = function (type) {
+module.exports = function (type) {
   if (type == "Joker Gassing"){
     return 1
   }
