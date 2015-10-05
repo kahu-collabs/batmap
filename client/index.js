@@ -1,19 +1,79 @@
-console.log('test')
+
+var getCrime = require('./source/getCrimeObject')
+
 var React = require('react')  //main
-console.log('test')
 var BatmapModal = require('./source/batmap-modal')
-console.log('test')
 React.render(<BatmapModal />, document.querySelector('#batmap-modal'))
 
 
+
 L.mapbox.accessToken = 'pk.eyJ1IjoicGV0dHljcmltZSIsImEiOiJjaWY0cTBoZDgwbXl0c2RtN2ZjYzhicjZoIn0.FDjxXktw-rA-U-qobjyNxQ';
-var map = L.mapbox.map(document.getElementById('map'), 'mapbox.streets')
+
+var geoJson = []
+var map = L.mapbox.map(document.getElementById('map'), 'pettycrime.nj17g72j')
     .setView([-41.29, 174.78], 13);
 
+var myLayer = L.mapbox.featureLayer().addTo(map);
 var latlng = []
 
+
+$(document).ready(function(){
+		dat_get()
+})
+
+
+function dat_get(){
+	$.get( "api/v1/reports", function( data ) {
+		  $( ".result" ).html( data );
+		  // console.log("call back data", data)
+		  var renderObjects = makeObjects(data)
+		  // console.log('render objects ', renderObjects)
+		  render(renderObjects);
+	});
+}
+
+// use the type ID to find the actual ID of the object
+
+function makeObjects(rawData){
+  for(i = 0; i < rawData.length; i++){
+    var item = rawData[i]
+    var id = item.id
+    var type = item.category_types_id
+    if(type == 1){
+    	var title = "Joker Gassing",
+    		img = "assets/joker_pin.png"
+    	} else if(type == 2){
+    		var title = "Mugging",
+    			img = "assets/batpin.png"
+    	} else if(type == 3){
+    		var title = "Home invasion",
+    			img = "assets/home_invasion.png"
+    	} else {
+    		var title = "Car Theft",
+    			img = "assets/car_thieft.png"
+    	}
+
+    console.log(item.location)
+    x = (item.category_types_id) - 1
+
+    var crime = getCrime(item.id, title, img, item.location, item.description)
+    console.log("crime ", crime)
+    geoJson.push(crime)
+    // pull the appropriate object out of the crime objects array, populate the relevant fields and push into geoJson array
+  }
+  return geoJson
+}
+
+
+
+
+
+
 var click = document.getElementById('click')
+
 map.on('click', function(e) {
+	console.log(e.latlng.lng)
+	console.log(e.latlng.lat)
 	latlng = [e.latlng.lng, e.latlng.lat]
 	console.log(latlng)
 	$.featherlight($('#example'));
@@ -24,11 +84,11 @@ map.on('click', function(e) {
 $('#example').submit(function(event){
 	event.preventDefault();
 	var type = testType(event.target[0].value);
-
-
-	var to_db = {category_type: type, description: event.target[1].value, happened_before: event.target[2].checked, location: latlng.join() };
-
+	console.log(type)
+	var to_db = {category_types_id: type, description: event.target[1].value, happened_before: event.target[2].checked, location: latlng.join() };
+	console.log("onclick ", to_db)
 	submitCrime(to_db);
+	dat_get();
 
 
 })
@@ -48,45 +108,28 @@ function testType(type){
 }
 
 function submitCrime(input){
-	var data = input.location
 
 	$.ajax({
 	  type: "POST",
 	  url: "api/v1/reports",
 	  data: input,
-	  success: dropPin(data),
+	  success: dat_get(),
 	  dataType: "json"
 	});
-
-	// $post(
-	// 	url: "./api/v1/reports",
-	// 	data: input,
-	// 	success: dropPin(data),
-	// 	)
 }
 
 
+function render(data){
+	console.log("rendering", data)
+	myLayer.on('layeradd', function(e) {
+    var marker = e.layer,
+        feature = marker.feature;
+        console.log("on layer add", feature.properties.icon)
 
-function dropPin(coord){
-	var y = L.mapbox.featureLayer({
-	    // this feature is in the GeoJSON format: see geojson.org
-	    // for the full specification
-	    // need to make this object relate to the object in the db somehow???
-	    type: 'Feature',
-	    geometry: {
-	        type: 'Point',
-	        // coordinates here are in longitude, latitude order because
-	        // x, y is the standard for GeoJSON and many formats
-	        coordinates: latlng
-	    },
-	    properties: {
-	        title: 'asdf',
-	        description: 'asdf',
-	        'marker-size': 'large',
-	        'marker-color': '#BE9A6B',
-	        'marker-symbol': 'cafe'
-	    }
-	}).addTo(map);
-	console.log(y)
+   marker.setIcon(L.icon(feature.properties.icon));
 
+   console.log("str ", marker)
+
+	});
+	myLayer.setGeoJSON(data);
 }
